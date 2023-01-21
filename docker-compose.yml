@@ -1,0 +1,52 @@
+version: '3.3'
+services:
+  influx:
+    image: influxdb:latest
+    container_name: influx
+    restart: always
+    ports:
+      - "8086:8086"
+    volumes:
+      - ./influxdb:/var/lib/influxdb
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=adminpass
+      - DOCKER_INFLUXDB_INIT_ORG=se4as
+      - DOCKER_INFLUXDB_INIT_BUCKET=crypto
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN="OhY1nFVtsxl0dkNRX2E6XVDFlE8BI_UMtJiGkah1FCneMQCaWWW7Zyk3LSs5aHayBXU1RJHwoU156pBhuQvOhA=="
+      - DOCKER_INFLUXDB_INIT_ADMIN_USER=admin
+      - DOCKER_INFLUXDB_INIT_ADMIN_PASSWORD=adminpass
+      - DOCKER_INFLUXDB_HTTP_AUTH_ENABLED=true
+      - DOCKER_INFLUXDB_HTTP_LOG_ENABLED=true
+      - DOCKER_INFLUXDB_HTTP_WRITE_TRACING=false
+
+  node-red:
+    image: nodered/node-red:latest
+    container_name: node-red
+    restart: always
+    build:
+      context: ./nodered
+      dockerfile: Dockerfile
+    ports:
+      - "1880:1880"
+    volumes:
+      - ./nodered:/data
+      #- ./settings.js:/data/settings.js
+    depends_on:
+      - influx
+
+  monitor:
+    image: monitor:latest
+    container_name: monitor
+    restart: always
+    build:
+      context: ./mape/monitor
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./mape/monitor:/app
+    depends_on:
+      - influx
+      - node-red
