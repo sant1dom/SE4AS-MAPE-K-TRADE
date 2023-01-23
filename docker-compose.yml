@@ -7,19 +7,23 @@ services:
     ports:
       - "8086:8086"
     volumes:
-      - ./influxdb:/var/lib/influxdb
+      - ./volumes/influxdb2/data:/var/lib/influxdb2
+      - ./volumes/influxdb2/config:/etc/influxdb2
+      - ./volumes/influxdb2/backup:/var/lib/backup
     environment:
       - DOCKER_INFLUXDB_INIT_MODE=setup
       - DOCKER_INFLUXDB_INIT_USERNAME=admin
       - DOCKER_INFLUXDB_INIT_PASSWORD=adminpass
       - DOCKER_INFLUXDB_INIT_ORG=se4as
       - DOCKER_INFLUXDB_INIT_BUCKET=crypto
-      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN="OhY1nFVtsxl0dkNRX2E6XVDFlE8BI_UMtJiGkah1FCneMQCaWWW7Zyk3LSs5aHayBXU1RJHwoU156pBhuQvOhA=="
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=my-super-secret-auth-token
       - DOCKER_INFLUXDB_INIT_ADMIN_USER=admin
       - DOCKER_INFLUXDB_INIT_ADMIN_PASSWORD=adminpass
       - DOCKER_INFLUXDB_HTTP_AUTH_ENABLED=true
       - DOCKER_INFLUXDB_HTTP_LOG_ENABLED=true
       - DOCKER_INFLUXDB_HTTP_WRITE_TRACING=false
+      - DOCKER_INFLUXDB_INIT_NO_OVERRIDE=true
+
 
   node-red:
     image: nodered/node-red:latest
@@ -40,6 +44,7 @@ services:
     image: monitor:latest
     container_name: monitor
     restart: always
+    env_file: .env
     build:
       context: ./mape/monitor
       dockerfile: Dockerfile
@@ -50,3 +55,9 @@ services:
     depends_on:
       - influx
       - node-red
+    environment:
+      INFLUXDB_TOKEN: ${INFLUXDB_TOKEN}
+      INFLUXDB_ORG: ${INFLUXDB_ORG}
+      INFLUXDB_BUCKET: ${INFLUXDB_BUCKET}
+      INFLUXDB_URL: ${INFLUXDB_URL}
+

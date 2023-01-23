@@ -7,4 +7,12 @@
     docker-compose up
  ```
  The bot will start by downloading the data of the specifed coins and then start trading. \
- You need to specify the token for InfluxDB in the code for now (will be changed in the future).
+ In order to manage variables needed for the monitor you need to create a file called .env in the root directory of the project. \
+ Ex:
+ ```bash
+     INFLUXDB_TOKEN=<token>
+     INFLUXDB_ORG=<your-org>
+     INFLUXDB_BUCKET=<your-bucket>
+     INFLUXDB_URL=http://<name-of-your-influxdb-container>:8086
+  ```
+

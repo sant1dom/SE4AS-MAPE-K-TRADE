@@ -146,6 +146,12 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+# Docker volumes
+#   To avoid accidental inclusion of Docker volumes (which may contain large files), we recommend
+#   adding a .dockerignore file to your project. You should also consider adding the contents of
+#   your .gitignore file to your .dockerignore file, as the two files serve similar purposes.
+volumes/
+
 # PyCharm
 #  JetBrains specific template is maintainted in a separate JetBrains.gitignore that can
 #  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
