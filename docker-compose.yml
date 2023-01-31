@@ -61,3 +61,41 @@ services:
       INFLUXDB_BUCKET: ${INFLUXDB_BUCKET}
       INFLUXDB_URL: ${INFLUXDB_URL}
 
+  executor:
+    image: executor:latest
+    container_name: executor
+    restart: always
+    env_file: .env
+    build:
+      context: ./mape/executor
+      dockerfile: Dockerfile
+    volumes:
+      - ./mape/executor:/app
+    depends_on:
+      - influx
+      - node-red
+    environment:
+      INFLUXDB_TOKEN: ${INFLUXDB_TOKEN}
+      INFLUXDB_ORG: ${INFLUXDB_ORG}
+      INFLUXDB_BUCKET: ${INFLUXDB_BUCKET}
+      INFLUXDB_URL: ${INFLUXDB_URL}
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: always
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./grafana/data:/var/lib/grafana
+      - ./grafana/logs:/var/log/grafana
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: adminpass
+    depends_on:
+      - influx
+
+
+
+
