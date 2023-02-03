@@ -80,6 +80,25 @@ services:
       INFLUXDB_BUCKET: ${INFLUXDB_BUCKET}
       INFLUXDB_URL: ${INFLUXDB_URL}
 
+  planner:
+    image: planner:latest
+    container_name: planner
+    restart: always
+    env_file: .env
+    build:
+      context: ./mape/planner
+      dockerfile: Dockerfile
+    volumes:
+      - ./mape/planner:/app
+    depends_on:
+      - influx
+      - node-red
+    environment:
+      INFLUXDB_TOKEN: ${INFLUXDB_TOKEN}
+      INFLUXDB_ORG: ${INFLUXDB_ORG}
+      INFLUXDB_BUCKET: ${INFLUXDB_BUCKET}
+      INFLUXDB_URL: ${INFLUXDB_URL}
+
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
