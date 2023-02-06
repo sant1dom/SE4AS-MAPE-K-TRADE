@@ -80,6 +80,26 @@ services:
       INFLUXDB_BUCKET: ${INFLUXDB_BUCKET}
       INFLUXDB_URL: ${INFLUXDB_URL}
 
+  ml:
+    image: ml:latest
+    container_name: ml
+    restart: always
+    env_file: .env
+    build:
+      context: ./ml
+      dockerfile: Dockerfile
+    volumes:
+      - ./ml:/app
+    depends_on:
+      - influx
+      - node-red
+    environment:
+      INFLUXDB_TOKEN: ${INFLUXDB_TOKEN}
+      INFLUXDB_ORG: ${INFLUXDB_ORG}
+      INFLUXDB_BUCKET: ${INFLUXDB_BUCKET}
+      INFLUXDB_URL: ${INFLUXDB_URL}
+
+
   planner:
     image: planner:latest
     container_name: planner
