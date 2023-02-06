@@ -6,17 +6,17 @@ import numpy as np
 from dotenv import load_dotenv
 from flask import Flask, jsonify
 
-load_dotenv()
-
-INFLUXDB_TOKEN = os.getenv("INFLUXDB_TOKEN")
-INFLUXDB_ORG = os.getenv("INFLUXDB_ORG")
-INFLUXDB_BUCKET = os.getenv("INFLUXDB_BUCKET")
-INFLUXDB_URL = os.getenv("INFLUXDB_URL")
-
-app = Flask(__name__)
-
-@app.route("/ml_result")
 def get_ml_result():
+  load_dotenv()
+
+  INFLUXDB_TOKEN = os.getenv("INFLUXDB_TOKEN")
+  INFLUXDB_ORG = os.getenv("INFLUXDB_ORG")
+  INFLUXDB_BUCKET = os.getenv("INFLUXDB_BUCKET")
+  INFLUXDB_URL = os.getenv("INFLUXDB_URL")
+
+  app = Flask(__name__)
+
+
   client = InfluxDBClient(url="http://influx:8086", token=INFLUXDB_TOKEN, org=INFLUXDB_ORG, timeout=30_000)
 
   query_api = client.query_api()
@@ -56,8 +56,5 @@ def get_ml_result():
   results = model.fit(method='statespace')
   result=results.forecast(steps=1,exog=exog.iloc[-1])
   result=result[0]
-  return jsonify({"ml_result": result})
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0",port="5050")
+  return result
 
