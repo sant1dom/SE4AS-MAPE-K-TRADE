@@ -5,12 +5,12 @@ from ml import *
 app = Flask(__name__)
 
 @app.route("/planner_result")
-def get_ml():
+def get_ml(coin):
     c=0
-    
-    prediction = get_ml_result()
+    print('coin')
+    prediction = get_ml_result(coin=coin)
 
-    url = "https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT"
+    url = f"https://api.binance.com/api/v3/ticker/price?symbol={coin}USDT"
     response = requests.get(url)
     data = response.json()
     last_price = float(data["price"])
@@ -22,5 +22,5 @@ def get_ml():
     return jsonify({"prediction": prediction,"buy_sell": c})
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0",port="5005")
+    app.run(host="0.0.0.0",port="5020")
 

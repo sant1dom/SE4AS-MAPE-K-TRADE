@@ -69,11 +69,14 @@ services:
     build:
       context: ./mape/executor
       dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
     volumes:
       - ./mape/executor:/app
     depends_on:
       - influx
       - node-red
+      - planner
     environment:
       INFLUXDB_TOKEN: ${INFLUXDB_TOKEN}
       INFLUXDB_ORG: ${INFLUXDB_ORG}
@@ -86,6 +89,8 @@ services:
     image: planner:latest
     container_name: planner
     restart: always
+    ports:
+      - "5020:5020"
     env_file: .env
     build:
       context: ./mape/planner

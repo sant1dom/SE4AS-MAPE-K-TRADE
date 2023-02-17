@@ -5,8 +5,8 @@ import statsmodels.api as sm
 import numpy as np
 from dotenv import load_dotenv
 from flask import Flask, jsonify
-
-def get_ml_result():
+#rimetter influx invece di localhost
+def get_ml_result(coin):
   load_dotenv()
 
   INFLUXDB_TOKEN = os.getenv("INFLUXDB_TOKEN")
@@ -16,16 +16,13 @@ def get_ml_result():
 
   app = Flask(__name__)
 
-
-  client = InfluxDBClient(url="http://influx:8086", token=INFLUXDB_TOKEN, org=INFLUXDB_ORG, timeout=30_000)
+  client = InfluxDBClient(url="http://localhost:8086", token=INFLUXDB_TOKEN, org=INFLUXDB_ORG, timeout=30_000)
 
   query_api = client.query_api()
-  query = 'from(bucket: "crypto")\
+  query = f'from(bucket: "crypto")\
     |> range(start: -1y)\
-    |> filter(fn: (r) => r["_measurement"] == "BTCUSDT")'
+    |> filter(fn: (r) => r["_measurement"] == "{coin.upper()}USDT")'
   result = query_api.query(org=INFLUXDB_ORG, query=query)
-
-
 
   results = []
   for table in result:
@@ -58,3 +55,4 @@ def get_ml_result():
   result=result[0]
   return result
 
+print(get_ml_result("ETH"))
