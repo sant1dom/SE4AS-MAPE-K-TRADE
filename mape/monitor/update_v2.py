@@ -186,3 +186,5 @@ if __name__ == "__main__":
                     end_time += limit * 3600000
     else:
         print("No new data to write to InfluxDB!")
+        # Sleep until the next hour
+        time.sleep(current_time - (current_time % 3600) + 3600 - current_time)
