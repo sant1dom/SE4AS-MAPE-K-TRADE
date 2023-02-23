@@ -16,7 +16,7 @@ def get_ml_result(coin):
 
   app = Flask(__name__)
 
-  client = InfluxDBClient(url="http://localhost:8086", token=INFLUXDB_TOKEN, org=INFLUXDB_ORG, timeout=30_000)
+  client = InfluxDBClient(url="http://influx:8086", token=INFLUXDB_TOKEN, org=INFLUXDB_ORG, timeout=30_000)
 
   query_api = client.query_api()
   query = f'from(bucket: "crypto")\
@@ -55,4 +55,3 @@ def get_ml_result(coin):
   result=result[0]
   return result
 
-print(get_ml_result("ETH"))

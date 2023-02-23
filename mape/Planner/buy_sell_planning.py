@@ -1,11 +1,12 @@
 import requests
-from flask import Flask, jsonify #AGGIUNGERE A DOCKER
+from flask import Flask, jsonify, request #AGGIUNGERE A DOCKER
 from ml import *
 
 app = Flask(__name__)
 
 @app.route("/planner_result")
-def get_ml(coin):
+def get_ml():
+    coin=request.args.get('coin')
     c=0
     print('coin')
     prediction = get_ml_result(coin=coin)
