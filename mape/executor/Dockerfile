@@ -5,4 +5,4 @@ RUN pip install --upgrade pip
 RUN pip install pyalgotrade
 RUN pip install requests
 COPY . .
-CMD ["python", "-u", "ciao.py"]
+CMD ["python", "-u", "executor.py"]

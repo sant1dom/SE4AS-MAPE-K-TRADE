@@ -70,7 +70,7 @@ services:
       context: ./mape/executor
       dockerfile: Dockerfile
     ports:
-      - "3001:3001"
+      - "3005:3005"
     volumes:
       - ./mape/executor:/app
     depends_on:

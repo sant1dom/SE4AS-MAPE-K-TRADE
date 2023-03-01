@@ -1,60 +1,86 @@
-from __future__ import print_function
+import requests
+import datetime
+import time
 
-from pyalgotrade import strategy
-from pyalgotrade.barfeed import quandlfeed
-from pyalgotrade.technical import ma
+class portfolio:
+    def __init__(self,investment):
+        self.investment = investment
+        self.coins_owned = {}
+        self.retrieve_last_prices()
+        #self.predictions = self.request_predictions()
+        
+        
+    def sell_all(self,coin):
+        if coin in self.coins_owned:
+            self.investment += self.coins_owned[coin]*self.last_prices[coin]
+            self.coins_owned[coin] = 0
+        
+        
+    def buy_10(self,coin,buy_quantity):
+        # 10% of amount of availabel dollars converted to coin, after that the coin in the portfolio gets that value added 
+        # if it exists otherwise it gets created with that value
+        coin_value_conversion = buy_quantity/self.last_prices[coin]
+        if coin in self.coins_owned:
+            self.coins_owned[coin]+=coin_value_conversion
+        else:
+            self.coins_owned[coin]=coin_value_conversion
+        self.investment-=buy_quantity
+        
+    def portfolio_update(self):
+        self.retrieve_last_prices()
+        buy_quantity = self.investment/10
+        predictions = self.request_predictions()                
+        for coin,buy_value in predictions.items():
+            if buy_value:
+                self.buy_10(coin,buy_quantity)
+            else:
+                self.sell_all(coin)
 
+            
+    
+    def retrieve_last_prices(self):
+        url = 'https://api.binance.com/api/v3/klines'
 
-class MyStrategy(strategy.BacktestingStrategy):
-    def __init__(self, feed, instrument, smaPeriod):
-        super(MyStrategy, self).__init__(feed, 1000)
-        self.__position = None
-        self.__instrument = instrument
-        # We'll use adjusted close values instead of regular close values.
-        self.setUseAdjustedValues(True)
-        self.__sma = ma.SMA(feed[instrument].getPriceDataSeries(), smaPeriod)
+        symbols = ['ADAUSDT', 'BNBUSDT', 'BTCUSDT', 'DOGEUSDT', 'DOTUSDT', 'ETHUSDT', 'LINKUSDT', 'LTCUSDT', 'UNIUSDT', 'XRPUSDT']  
+        interval = '1d'
+        limit = 1
 
-    def onEnterOk(self, position):
-        execInfo = position.getEntryOrder().getExecutionInfo()
-        self.info("BUY at $%.2f" % (execInfo.getPrice()))
+        last_prices={}
 
-    def onEnterCanceled(self, position):
-        self.__position = None
+        for symbol in symbols:
+            params = {
+                'symbol': symbol,
+                'interval': interval,
+                'limit': limit
+            }
+            response = requests.get(url, params=params)
+            if response.status_code == 200:
+                data = response.json()
+                for item in data:
+                    close_price = item[4]
+                    last_prices[symbol]=close_price
+            else:
+                print(f"Error retrieving data for symbol {symbol}. Status code: {response.status_code}")
+            
+            for keys in last_prices:
+                last_prices[keys] = float(last_prices[keys])
+        self.last_prices = last_prices
+    
+    def request_predictions(self):
+        initialization=0
+        coins = ['ADA', 'BNB', 'BTC', 'DOGE', 'DOT', 'ETH', 'LINK', 'LTC', 'UNI', 'XRP']
+        coin_signals={}
+        for coin in coins:
+            url = f"http://planner_result:5020/planner_result?coincoin={coin}"
+            response = requests.get(url)
+            data = response.json()
+            coin_signals[coin+"USDT"] = data["buy_sell"]
+            print('Prediction_Retrieval :'+str(len(coin_signals)*100/len(coins))+"%")
+        return coin_signals
+    
 
-    def onExitOk(self, position):
-        execInfo = position.getExitOrder().getExecutionInfo()
-        self.info("SELL at $%.2f" % (execInfo.getPrice()))
-        self.__position = None
-
-    def onExitCanceled(self, position):
-        # If the exit was canceled, re-submit it.
-        self.__position.exitMarket()
-
-    def onBars(self, bars):
-        # Wait for enough bars to be available to calculate a SMA.
-        if self.__sma[-1] is None:
-            return
-
-        bar = bars[self.__instrument]
-        # If a position was not opened, check if we should enter a long position.
-        if self.__position is None:
-            if bar.getPrice() > self.__sma[-1]:
-                # Enter a buy market order for 10 shares. The order is good till canceled.
-                self.__position = self.enterLong(self.__instrument, 10, True)
-        # Check if we have to exit the position.
-        elif bar.getPrice() < self.__sma[-1] and not self.__position.exitActive():
-            self.__position.exitMarket()
-
-
-def run_strategy(smaPeriod):
-    # Load the bar feed from the CSV file
-    feed = quandlfeed.Feed()
-    feed.addBarsFromCSV("orcl", "WIKI-ORCL-2000-quandl.csv")
-
-    # Evaluate the strategy with the feed.
-    myStrategy = MyStrategy(feed, "orcl", smaPeriod)
-    myStrategy.run()
-    print("Final portfolio value: $%.2f" % myStrategy.getBroker().getEquity())
-
-
-run_strategy(15)
+a = portfolio(100)
+while True:
+    time.sleep(1)
+    a.portfolio_update()
+    
