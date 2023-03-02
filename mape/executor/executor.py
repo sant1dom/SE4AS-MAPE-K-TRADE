@@ -71,7 +71,7 @@ class portfolio:
         coins = ['ADA', 'BNB', 'BTC', 'DOGE', 'DOT', 'ETH', 'LINK', 'LTC', 'UNI', 'XRP']
         coin_signals={}
         for coin in coins:
-            url = f"http://planner_result:5020/planner_result?coincoin={coin}"
+            url = f"http://planner:5020/planner_result?coin={coin}"
             response = requests.get(url)
             data = response.json()
             coin_signals[coin+"USDT"] = data["buy_sell"]
