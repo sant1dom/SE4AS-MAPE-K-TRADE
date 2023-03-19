@@ -1,6 +1,7 @@
 import requests
 from flask import Flask, jsonify, request #AGGIUNGERE A DOCKER
 from ml import *
+import time
 
 app = Flask(__name__)
 
@@ -23,5 +24,6 @@ def get_ml():
     return jsonify({"prediction": prediction,"buy_sell": c})
 
 if __name__ == "__main__":
+    time.sleep(50)
     app.run(host="0.0.0.0",port="5020")
 

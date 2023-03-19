@@ -49,7 +49,7 @@ services:
       context: ./mape/monitor
       dockerfile: Dockerfile
     ports:
-      - "3001:3001"
+      - "3005:3005"
     volumes:
       - ./mape/monitor:/app
     depends_on:
@@ -70,7 +70,7 @@ services:
       context: ./mape/executor
       dockerfile: Dockerfile
     ports:
-      - "3005:3005"
+      - "3001:3001"
     volumes:
       - ./mape/executor:/app
     depends_on:
@@ -121,7 +121,6 @@ services:
       GF_SECURITY_ADMIN_PASSWORD: adminpass
     depends_on:
       - influx
-
 
 
 
