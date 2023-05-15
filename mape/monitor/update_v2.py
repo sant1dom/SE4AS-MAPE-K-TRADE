@@ -187,4 +187,5 @@ if __name__ == "__main__":
     else:
         print("No new data to write to InfluxDB!")
         # Sleep until the next hour
-        time.sleep(current_time - (current_time % 3600) + 3600 - current_time)
+        #time.sleep(current_time - (current_time % 3600) + 3600 - current_time)
+        time.sleep(30)

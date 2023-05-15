@@ -437,46 +437,5 @@
                 "file": "/usr/src/node-red/node_modules/node-red-contrib-influxdb/influxdb.js"
             }
         }
-    },
-    "node-red-contrib-kafka-client": {
-        "name": "node-red-contrib-kafka-client",
-        "version": "0.1.0",
-        "local": false,
-        "user": false,
-        "nodes": {
-            "kafka-consumer": {
-                "name": "kafka-consumer",
-                "types": [
-                    "kafka-consumer"
-                ],
-                "enabled": true,
-                "local": false,
-                "user": false,
-                "module": "node-red-contrib-kafka-client",
-                "file": "/usr/src/node-red/node_modules/node-red-contrib-kafka-client/js/kafka-consumer.js"
-            },
-            "kafka-producer": {
-                "name": "kafka-producer",
-                "types": [
-                    "kafka-producer"
-                ],
-                "enabled": true,
-                "local": false,
-                "user": false,
-                "module": "node-red-contrib-kafka-client",
-                "file": "/usr/src/node-red/node_modules/node-red-contrib-kafka-client/js/kafka-producer.js"
-            },
-            "kafka-broker": {
-                "name": "kafka-broker",
-                "types": [
-                    "kafka-broker"
-                ],
-                "enabled": true,
-                "local": false,
-                "user": false,
-                "module": "node-red-contrib-kafka-client",
-                "file": "/usr/src/node-red/node_modules/node-red-contrib-kafka-client/js/kafka-broker.js"
-            }
-        }
     }
 }

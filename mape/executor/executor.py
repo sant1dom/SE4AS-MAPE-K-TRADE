@@ -17,9 +17,13 @@ def portfolio_bucket_creation(url,token,org):
     # Get the buckets API instance
     buckets_api = client.buckets_api()
 
-    # Create a new bucket named 'portfolio'
+
     name = "portfolio"
-    bucket = buckets_api.create_bucket(bucket_name=name)
+
+    # Create a new bucket named 'portfolio'
+    if not buckets_api.find_bucket_by_name("portfolio"):
+        bucket = buckets_api.create_bucket(bucket_name=name)
+        
 
     # Create the schema for the bucket
     schema = """
@@ -63,7 +67,7 @@ class portfolio:
         
         
     def buy_10(self,coin,buy_quantity):
-        # 10% of amount of availabel dollars converted to coin, after that the coin in the portfolio gets that value added 
+        # 10% of amount of available dollars converted to coin, after that the coin in the portfolio gets that value added 
         # if it exists otherwise it gets created with that value
         coin_value_conversion = buy_quantity/self.last_prices[coin]
         if coin in self.coins_owned:
@@ -147,7 +151,7 @@ a=portfolio(100,INFLUXDB_URL,INFLUXDB_TOKEN,INFLUXDB_ORG)
 while True:    
     a.portfolio_update()
     print('portfolio_updated')
-    time.sleep(3600)
+    time.sleep(30)
     
     
     
