@@ -79,7 +79,7 @@ class portfolio:
     def retrieve_last_prices(self):
         url = 'https://api.binance.com/api/v3/klines'
 
-        symbols = ['ADAUSDT', 'BNBUSDT', 'BTCUSDT', 'DOGEUSDT', 'DOTUSDT', 'ETHUSDT', 'LINKUSDT', 'LTCUSDT', 'UNIUSDT', 'XRPUSDT']  
+        symbols = ['ADAUSDT', 'BNBUSDT']#, 'BTCUSDT', 'DOGEUSDT', 'DOTUSDT', 'ETHUSDT', 'LINKUSDT', 'LTCUSDT', 'UNIUSDT', 'XRPUSDT']  
         interval = '1d'
         limit = 1
 
@@ -106,7 +106,7 @@ class portfolio:
     
     def request_predictions(self):
         initialization=0
-        coins = ['ADA', 'BNB', 'BTC', 'DOGE', 'DOT', 'ETH', 'LINK', 'LTC', 'UNI', 'XRP']
+        coins = ['ADA', 'BNB']#, 'BTC', 'DOGE', 'DOT', 'ETH', 'LINK', 'LTC', 'UNI', 'XRP']
         coin_signals={}
         for coin in coins:
             url = f"http://planner:5020/planner_result?coin={coin}"
