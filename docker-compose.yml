@@ -24,22 +24,6 @@ services:
       - DOCKER_INFLUXDB_HTTP_WRITE_TRACING=false
       - DOCKER_INFLUXDB_INIT_NO_OVERRIDE=true
 
-
-  node-red:
-    image: nodered/node-red:latest
-    container_name: node-red
-    restart: always
-    build:
-      context: ./nodered
-      dockerfile: Dockerfile
-    ports:
-      - "1880:1880"
-    volumes:
-      - ./nodered:/data
-      #- ./settings.js:/data/settings.js
-    depends_on:
-      - influx
-
   monitor:
     image: monitor:latest
     container_name: monitor
@@ -54,7 +38,6 @@ services:
       - ./mape/monitor:/app
     depends_on:
       - influx
-      - node-red
     environment:
       INFLUXDB_TOKEN: ${INFLUXDB_TOKEN}
       INFLUXDB_ORG: ${INFLUXDB_ORG}
@@ -75,7 +58,6 @@ services:
       - ./mape/executor:/app
     depends_on:
       - influx
-      - node-red
       - planner
     environment:
       INFLUXDB_TOKEN: ${INFLUXDB_TOKEN}
@@ -99,7 +81,6 @@ services:
       - ./mape/planner:/app
     depends_on:
       - influx
-      - node-red
     environment:
       INFLUXDB_TOKEN: ${INFLUXDB_TOKEN}
       INFLUXDB_ORG: ${INFLUXDB_ORG}
