@@ -18,11 +18,8 @@ This project consists in a set of containers running in Docker and automatically
 	 - *KNOWLEDGE*: The knowledge of the loop has been realized using InfluxDB (https://www.influxdata.com),
  - **Other services containers**
 	 - *grafana_container*: A dashboard that allows us to graphically monitor the system and check if it is working properly.
-	 - *nodered_container*: ???
-
 ## Configuration
 The configuration of the system is mainly contained in the *docker-compose.yml* file. Be sure that all the exposed mapped ports are free on your environment:
-- **1880** for Node-RED
 - **3005** for the Monitor
 - **3001** for the Executor
 - **5020** for the Planner
