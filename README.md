@@ -31,11 +31,18 @@ If you are not able to free all the listed ports, you can change the mapping in 
 In order to manage variables needed for the monitor you need to create a file called .env in the root directory of the project. \
  Ex:
  ```bash
-     INFLUXDB_TOKEN=<token>
-     INFLUXDB_ORG=<your-org>
-     INFLUXDB_BUCKET=<your-bucket>
-     INFLUXDB_URL=http://<name-of-your-influxdb-container>:8086
+INFLUXDB_TOKEN=<token>
+INFLUXDB_ORG=<your-org>
+INFLUXDB_BUCKET=<your-bucket>
+INFLUXDB_URL=http://<name-of-your-influxdb-container>:8086
   ```
+an example of working .env file is the following
+```bash
+INFLUXDB_TOKEN=my-super-secret-auth-token
+INFLUXDB_ORG=se4as
+INFLUXDB_BUCKET=crypto
+INFLUXDB_URL=http://influx:8086
+```
 
 
 ## Running 
