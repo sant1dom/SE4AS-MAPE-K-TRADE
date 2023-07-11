@@ -13,9 +13,9 @@ This project consists in a set of containers running in Docker and automatically
 
  - **MAPE-K-Loop / Managing System containers**
 	 - *MAPE_MONITOR*: The monitor has been realized using <a href="https://requests.readthedocs.io/en/latest/">Python Requests Module</a>. It gets the data from the <a href="https://www.binance.com/en/binance-api">Binance API<a> and stores it in the knowledge (InfluxDB)  
-	 - *MAPE_PLANNER*: ???
-	 - *MAPE_EXECUTOR*: ???
-	 - *KNOWLEDGE*: The knowledge of the loop has been realized using InfluxDB (https://www.influxdata.com),
+	 - *MAPE_PLANNER*: The planner has been realized using statsmodels(<a href="https://www.statsmodels.org/stable/index.html">) and Flask <a href="https://flask.palletsprojects.com/en/2.3.x/">. 
+	 - *MAPE_EXECUTOR*: The executor works using Flask(<a href="https://flask.palletsprojects.com/en/2.3.x/">) and <a href="https://requests.readthedocs.io/en/latest/">Python Requests.
+	 - *KNOWLEDGE*: The knowledge of the loop has been realized using InfluxDB (https://www.influxdata.com), 
  - **Other services containers**
 	 - *grafana_container*: A dashboard that allows us to graphically monitor the system and check if it is working properly.
 ## Configuration
